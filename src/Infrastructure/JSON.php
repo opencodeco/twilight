@@ -32,10 +32,10 @@ class JSON
         }
     }
 
-    public function parse(): mixed
+    public function parse(bool $associative = true): mixed
     {
         try {
-            return json_decode($this->value, true, 512, JSON_THROW_ON_ERROR);
+            return json_decode($this->value, $associative, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
             $this->errors[] = $e;
             return null;

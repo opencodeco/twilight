@@ -1,0 +1,2 @@
+GET http://localhost:9999/contagem-pessoas
+Content-Type: application/json

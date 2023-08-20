@@ -6,6 +6,7 @@ namespace Twilight\Infrastructure\HTTP;
 
 use Psr\Container\ContainerInterface;
 use Swoole\Http\Response;
+use Twilight\Infrastructure\HTTP\Contracts\RouteContract;
 use Twilight\Infrastructure\HTTP\Contracts\RouterContract;
 use Twilight\Infrastructure\JSON;
 
@@ -52,24 +53,25 @@ class Router implements RouterContract
         $method = strtoupper($method);
         $uri = strtolower($uri);
         $endpoint = "#:$method:$uri";
-
-        preg_match_all("/$this->pattern/", $endpoint, $matches, PREG_SET_ORDER, 0);
+        $pattern = "/$this->pattern/";
+        preg_match_all($pattern, $endpoint, $matches, PREG_SET_ORDER);
         $params = $matches[0] ?? [];
-        $this->container->set(Route::class, Route::make($method, $uri, $params));
-
         $index = $this->extract($params);
         $candidate = $this->candidates[$index] ?? null;
 
         $response = $this->container->get(Response::class);
         if (!$candidate) {
             $response->status(404);
-            $response->end(JSON::from([
-                'error' => 'not found',
-                'pattern' => "/$this->pattern/",
+            $value = [
+                'error' => 'no route to resource',
+                'pattern' => $pattern,
                 'endpoint' => $endpoint,
-            ])->stringify());
+            ];
+            $response->end(JSON::from($value)->stringify());
             return;
         }
+
+        $this->container->set(RouteContract::class, Route::make($method, $uri, $params));
         $content = $this->container->call($candidate);
         if ($response->isWritable()) {
             $response->end(JSON::from($content)->stringify());

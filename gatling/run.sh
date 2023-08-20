@@ -1,9 +1,11 @@
 GATLING_BIN_DIR=$HOME/gatling/3.9.5/bin
 
-WORKSPACE=$(pwd)
+WORKSPACE="$(pwd)/gatling"
+
+echo "WORKSPACE $WORKSPACE"
 
 sh "$GATLING_BIN_DIR/gatling.sh" -rm local -s RinhaBackendSimulation \
-    -rd "$WORKSPACE" \
+    -rd "Twilight Project" \
     -rf "$WORKSPACE/user-files/results" \
     -sf "$WORKSPACE/user-files/simulations" \
     -rsf "$WORKSPACE/user-files/resources"

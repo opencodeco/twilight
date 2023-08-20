@@ -8,7 +8,7 @@ setup:
 
 .PHONY: migrate
 migrate:
-	docker compose exec db bash -c "mysql opencodeco < /var/www/migrations.sql"
+	docker compose exec db bash -c "mysql twilight < /var/www/twilight.sql"
 
 .PHONY: up
 up:

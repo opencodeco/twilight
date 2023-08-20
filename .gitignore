@@ -17,3 +17,4 @@ cache.properties
 # Composer
 composer.phar
 composer.lock
+server.log
