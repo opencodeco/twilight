@@ -1,0 +1,12 @@
+{
+  "name": "wilcorrea/twilight",
+  "type": "project",
+  "require": {
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Twilight\\": "src/"
+    }
+  }
+}
