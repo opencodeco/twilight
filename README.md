@@ -1,4 +1,4 @@
-# Nome do projeto
+# Twilight: o devorador de rinhas
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/opencodeco/twilight?style=for-the-badge)
 ![GitHub language count](https://img.shields.io/github/languages/count/opencodeco/twilight?style=for-the-badge)
