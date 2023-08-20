@@ -5,18 +5,17 @@ declare(strict_types=1);
 
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require __DIR__ . '/vendor/autoload.php';
-    echo "autoload was required";
 }
 
 use Swoole\Http\Server;
-use Twilight\Infrastructure\Root;
+use Twilight\Infrastructure\HTTP\Application;
 
 $http = new Server('0.0.0.0', 9501);
 
 $http->on('start', static function () {
-    echo "http server is started at http://0.0.0.0:9501\n";
+    echo "Twilight is started at http://0.0.0.0:9501\n";
 });
 
-$http->on('request', Root::create());
+$http->on('request', Application::create());
 
 $http->start();

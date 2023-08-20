@@ -2,7 +2,10 @@
   "name": "wilcorrea/twilight",
   "type": "project",
   "require": {
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ramsey/uuid": "^4.7",
+    "predis/predis": "^2.2",
+    "php-di/php-di": "^7.0"
   },
   "autoload": {
     "psr-4": {
