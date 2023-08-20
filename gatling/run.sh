@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 GATLING_BIN_DIR=$HOME/gatling/3.9.5/bin
 
 WORKSPACE="$(pwd)/gatling"

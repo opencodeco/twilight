@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Swoole\Http\Request;

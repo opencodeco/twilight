@@ -17,9 +17,22 @@ services:
       - APP_ENV=development
       - AUTORELOAD_PROGRAMS=swoole
       - AUTORELOAD_ANY_FILES=0
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
-      - MYSQL_DATABASE=twilight
+      - CACHE_HOST=cache
+      - CACHE_PORT=6379
+      - DB_DSN=mysql:host=db;dbname=twilight
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - LOG_MAX_SIZE=100000
+      - LOG_MAX_FILES=3
+      - LOG_LEVEL=Debug
+#       Debug
+#       Info
+#       Notice
+#       Warning
+#       Error
+#       Critical
+#       Alert
+#       Emergency
     depends_on:
       - cache
       - db
@@ -50,7 +63,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.25"
+          cpus: "0.4"
           memory: "500MB"
   
   cache:
@@ -73,14 +86,15 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=twilight
     volumes:
-      - ./docker/db/twilight.sql:/var/www/twilight.sql
+#      - ./docker/db/twilight.sql:/var/www/twilight.sql
+      - ./docker/db/twilight.sql:/docker-entrypoint-initdb.d/migrations.sql
       - ./docker/db/.my.cnf:/root/.my.cnf
     ports:
       - "3306:3306"
     deploy:
       resources:
         limits:
-          cpus: "0.65"
+          cpus: "0.5"
           memory: "1000MB"
 
 networks:
