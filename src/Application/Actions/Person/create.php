@@ -24,22 +24,27 @@ return static function (
     $id = $uuid->toString();
     $data['id'] = $id;
 
-    dispatch($response, $id, $data, $cache);
+    dispatch($response, $id, $data);
 
-    register($id, $data, $database, $logger);
+    register($cache, $database, $logger, $id, $data);
 };
 
-function dispatch(Response $response, string $id, array $data, CacheContract $cache): void
+function dispatch(Response $response, string $id, array $data): void
 {
     $response->status(201);
     $response->header('Location', "/pessoas/$id");
     $response->end(JSON::from($data)->stringify(true));
-
-    $cache->set("person:$id", $data);
 }
 
-function register($id, $data, $database, $logger): void
-{
+function register(
+    CacheContract $cache,
+    DatabaseContract $database,
+    LoggerInterface $logger,
+    string $id,
+    array $data
+): void {
+    $cache->set("person:$id", $data);
+
     ['apelido' => $nickname, 'nome' => $name, 'nascimento' => $birthdate, 'stack' => $stack] = $data;
     $stack = JSON::from($stack)->stringify();
     $searchable = strtolower($name) . '|' . strtolower($nickname) . '|' . strtolower($stack);

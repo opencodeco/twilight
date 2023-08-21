@@ -16,7 +16,7 @@ use Twilight\Infrastructure\Database\Contract\DatabaseContract;
 use Twilight\Infrastructure\Database\MySQL;
 use Twilight\Infrastructure\HTTP\Contracts\InterruptionHandlerContract;
 use Twilight\Infrastructure\HTTP\Contracts\RouterContract;
-use Twilight\Infrastructure\HTTP\Router;
+use Twilight\Infrastructure\HTTP\Routing\Router;
 use Twilight\Infrastructure\JSON;
 
 function env(string $key, string|array|null|false|int|float $default = null): string|array|null|false|int|float
