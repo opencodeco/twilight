@@ -6,51 +6,62 @@
 ![Bitbucket open issues](https://img.shields.io/bitbucket/issues/opencodeco/twilight?style=for-the-badge)
 ![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/opencodeco/twilight?style=for-the-badge)
 
-<img src="imagem.png" alt="Exemplo imagem">
-
-> Linha adicional de texto informativo sobre o que o projeto faz. Sua introdução deve ter cerca de 2 ou 3 linhas. Não exagere, as pessoas não vão ler.
+> Projeto montado apenas em cima do Swoole e com muitas soluções in house para ganhar performance
 
 ### Ajustes e melhorias
 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
-- [x] Tarefa 1
-- [x] Tarefa 2
-- [x] Tarefa 3
-- [ ] Tarefa 4
-- [ ] Tarefa 5
+- [x] Configurar um projeto base
+- [x] Preprar uma base para rodar a API
+- [x] Definir um routeador de alta performance
+- [x] Abstrair a infra para HTTP, Cache, Persistence e Log
+- [ ] Fazer uma PoC com todos os serviços rodando
+- [ ] Migrar a parte de persistência para uma estrutura mais formal
+- [ ] Validar se actions como funções são mais performáticas que classes
 
 ## 💻 Pré-requisitos
 
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
-* Você instalou a versão mais recente de `<linguagem / dependência / requeridos>`
-* Você tem uma máquina `<Windows / Linux / Mac>`. Indique qual sistema operacional é compatível / não compatível.
-* Você leu `<guia / link / documentação_relacionada_ao_projeto>`.
+* Você instalou a versão mais recente do Docker (que já vem com o plugin compose)
+* Você tem um Javinha rodando para rodar os testes
+* Você tem o ambiente preparado para rodar um makefile
 
-## 🚀 Instalando <nome_do_projeto>
+## 🚀 Baixando o Twilight
 
-Para instalar o <nome_do_projeto>, siga estas etapas:
-
-Linux e macOS:
-```
-<comando_de_instalação>
-```
-
-Windows:
-```
-<comando_de_instalação>
-```
-
-## ☕ Usando <nome_do_projeto>
-
-Para usar <nome_do_projeto>, siga estas etapas:
+Para começar é precisar fazer um clone deste repositório:
 
 ```
-<exemplo_de_uso>
+git clone git@github.com:opencodeco/twilight.git
 ```
 
-Adicione comandos de execução e exemplos que você acha que os usuários acharão úteis. Fornece uma referência de opções para pontos de bônus!
+Ou fazer download do zip
+```
+wget https://github.com/opencodeco/twilight/archive/refs/heads/main.zip
+```
+
+## ☕ Rodando o Twilight
+
+Para por o projeto para rodar basta rodar o comando a serguir
+
+```
+make
+```
+
+Caso não tenha o make disponível rode na sequência:
+- docker compose run --rm setup
+- docker compose up
+
+Para rodar o teste de stress utilize
+```
+make stress
+```
+
+Ou para ambientes Unix
+```
+sh ./gatling/run.sh
+```
 
 ## 📫 Contribuindo para <nome_do_projeto>
 
