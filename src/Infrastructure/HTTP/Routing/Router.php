@@ -87,7 +87,7 @@ final class Router implements RouterContract
         $this->container->set(RouteContract::class, $route);
         $content = $this->container->call($candidate);
         if ($response->isWritable()) {
-            $response->end(JSON::from($content)->stringify());
+            $response->end(JSON::stringify($content));
         }
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Twilight\Infrastructure\HTTP\Routing;
 
+use Throwable;
 use Twilight\Infrastructure\HTTP\Contracts\ResolverContract;
 
 final class Resolver implements ResolverContract
@@ -13,9 +14,9 @@ final class Resolver implements ResolverContract
     public function append(string $method, string $uri, int $id): self
     {
         $method = strtoupper($method);
-        $uri = str_replace('/', '\/', strtolower($uri));
+        $uri = $this->normalizeURI($uri);
         $endpoint = "$method:$uri";
-        $this->pattern .= "|^(?<routing_$id>#):$endpoint\$";
+        $this->pattern .= "|^(?<routing_$id>#):$endpoint\/?\$";
         return $this;
     }
 
@@ -34,6 +35,11 @@ final class Resolver implements ResolverContract
         return Route::make($id, $method, $uri, $params);
     }
 
+    public function pattern(): string
+    {
+        return $this->pattern;
+    }
+
     private function extractId(array $matches): ?int
     {
         foreach ($matches as $key => $value) {
@@ -45,5 +51,44 @@ final class Resolver implements ResolverContract
             }
         }
         return null;
+    }
+
+    private function normalizeURI(string $uri): string
+    {
+        if ($uri === '/') {
+            return '';
+        }
+        $uri = strtolower(trim($uri, '/'));
+        $uri = '/' . $uri;
+        $uri = preg_replace('/(\/+)/', '/', $uri);
+        $uri = str_replace('/', '\/', $uri);
+        return $this->configureRegexURI($uri);
+    }
+
+    private function configureRegexURI(string $uri): string
+    {
+        $callback = static function ($matches) {
+            try {
+                $match = $matches[1] ?? null;
+                if (!is_string($match)) {
+                    return '([^\/]*)';
+                }
+                $pieces = explode('|', $match);
+                $name = trim(array_shift($pieces));
+                if (!count($pieces)) {
+                    return "(?<$name>[^\/]*)";
+                }
+                $config = trim(array_shift($pieces));
+                $matcher = match ($config) {
+                    'uuid' => '[^\/]\w{8}-\w{4}-\w{4}-\w{4}-\w{12}',
+                    'int' => '[^\/]\d+',
+                    default => "[^\/]*"
+                };
+                return "(?<$name>$matcher)";
+            } catch (Throwable) {
+                return '([^\/]*)';
+            }
+        };
+        return preg_replace_callback('/\{[\s+]?([^}]+)[\s+]?}/', $callback, $uri);
     }
 }

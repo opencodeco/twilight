@@ -14,6 +14,10 @@ up:
 down:
 	docker compose down --remove-orphans --volumes
 
+.PHONY: bash
+bash:
+	docker compose run --rm setup bash
+
 .PHONY: migrate
 migrate:
 	docker compose exec db bash -c "mysql twilight < /var/www/twilight.sql"

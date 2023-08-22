@@ -16,6 +16,6 @@ return static function (Router $router) {
 
     $router->all('(.*)', function (Response $response) {
         $response->status(404);
-        $response->end(JSON::from(['error' => 'no route to resource'])->stringify());
+        $response->end(JSON::stringify(['error' => 'no route to resource']));
     });
 };

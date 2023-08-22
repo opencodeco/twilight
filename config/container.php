@@ -101,7 +101,7 @@ return static function (ContainerInterface $container) {
                     'line' => $interruption->getLine(),
                     'trace' => $interruption->getTraceAsString(),
                 ];
-                $response->end(JSON::from($context)->stringify());
+                $response->end(JSON::stringify($context));
             }
         };
     });

@@ -8,14 +8,21 @@
     "predis/predis": "^2.2",
     "php-di/php-di": "^7.0",
     "monolog/monolog": "^3.4"
-  }
-  ,
+  },
   "require-dev": {
-    "roave/security-advisories": "dev-latest"
+    "roave/security-advisories": "dev-latest",
+    "phpunit/phpunit": "^10"
   },
   "autoload": {
     "psr-4": {
-      "Twilight\\": "src/"
-    }
+      "Twilight\\": "src/",
+      "Tests\\": "tests/"
+    },
+    "classmap": [
+      "src/"
+    ]
+  },
+  "scripts": {
+    "test": "phpunit --testdox --colors tests"
   }
 }

@@ -10,5 +10,7 @@ interface ResolverContract
 {
     public function append(string $method, string $uri, int $id): self;
 
+    public function pattern(): string;
+
     public function match(string $method, string $uri): ?Route;
 }

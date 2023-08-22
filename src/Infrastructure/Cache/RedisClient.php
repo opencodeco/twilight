@@ -3,7 +3,7 @@
 namespace Twilight\Infrastructure\Cache;
 
 use Predis\ClientInterface;
-use Predis\Response\Status;
+use Throwable;
 use Twilight\Infrastructure\Cache\Contracts\CacheContract;
 use Twilight\Infrastructure\JSON;
 
@@ -18,17 +18,46 @@ readonly class RedisClient implements CacheContract
         return new self($client);
     }
 
-    public function set(string $key, mixed $value, int $ttl = 3600): Status
+    public function set(string $key, mixed $value, int $ttl = 3600): bool
     {
-        return $this->client->set($key, JSON::from($value)->stringify(), 'EX', $ttl);
+        try {
+            $this->client->set($key, JSON::stringify($value));
+            return true;
+        } catch (Throwable) {
+            return false;
+        }
     }
 
     public function get(string $key): mixed
     {
-        $value = $this->client->get($key);
+        try {
+            $value = $this->client->get($key);
+        } catch (Throwable) {
+            return null;
+        }
         if ($value === null) {
             return null;
         }
-        return JSON::from($value)->parse();
+        return JSON::parse($value);
+    }
+
+    public function append(string $key, string $value): bool
+    {
+        try {
+            $this->set($key, $this->get($key) . $value);
+            return true;
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
+    public function delete(string $key): bool
+    {
+        try {
+            $this->client->del($key);
+            return true;
+        } catch (Throwable) {
+            return false;
+        }
     }
 }

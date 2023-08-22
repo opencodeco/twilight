@@ -5,45 +5,37 @@ declare(strict_types=1);
 namespace Twilight\Infrastructure;
 
 use JsonException;
+use Throwable;
 
 class JSON
 {
-    private array $errors;
+    private static Throwable $error;
 
-    public function __construct(private readonly mixed $value)
-    {
-    }
-
-    public static function from(mixed $value): self
-    {
-        return new self($value);
-    }
-
-    public function stringify(bool $pretty = false): ?string
+    public static function stringify(mixed $value, bool $pretty = false): ?string
     {
         try {
             if ($pretty) {
-                return json_encode($this->value, JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_IGNORE | JSON_PRETTY_PRINT);
+                return json_encode($value, JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_IGNORE | JSON_PRETTY_PRINT);
             }
-            return json_encode($this->value, JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_IGNORE);
+            return json_encode($value, JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_IGNORE);
         } catch (JsonException $e) {
-            $this->errors[] = $e;
+            static::$error = $e;
             return null;
         }
     }
 
-    public function parse(bool $associative = true): mixed
+    public static function parse(string $value, bool $associative = true): mixed
     {
         try {
-            return json_decode($this->value, $associative, 512, JSON_THROW_ON_ERROR);
+            return json_decode($value, $associative, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
-            $this->errors[] = $e;
+            static::$error = $e;
             return null;
         }
     }
 
-    public function errors(): array
+    public static function error(): Throwable
     {
-        return $this->errors;
+        return static::$error;
     }
 }
