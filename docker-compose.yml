@@ -42,16 +42,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"
+          cpus: "0.25"
           memory: "500MB"
   
   api2:
     <<: *api
     container_name: twilight-app2
-  
-  api3:
-    <<: *api
-    container_name: twilight-app3
   
   nginx:
     container_name: twilight-reverse-proxy
@@ -67,7 +63,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.3"
+          cpus: "0.4"
           memory: "500MB"
   
   cache:

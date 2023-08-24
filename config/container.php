@@ -14,6 +14,8 @@ use Twilight\Infrastructure\Cache\Contracts\CacheContract;
 use Twilight\Infrastructure\Cache\RedisClient;
 use Twilight\Infrastructure\Database\Contract\DatabaseContract;
 use Twilight\Infrastructure\Database\MySQL;
+use Twilight\Infrastructure\Event\Contracts\EventManagerContract;
+use Twilight\Infrastructure\Event\EventManager;
 use Twilight\Infrastructure\HTTP\Contracts\InterruptionHandlerContract;
 use Twilight\Infrastructure\HTTP\Contracts\RouterContract;
 use Twilight\Infrastructure\HTTP\Routing\Router;
@@ -105,4 +107,7 @@ return static function (ContainerInterface $container) {
             }
         };
     });
+
+    $eventManager = new EventManager($container);
+    $container->set(EventManagerContract::class, $eventManager);
 };

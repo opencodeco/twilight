@@ -29,7 +29,7 @@ final class Resolver implements ResolverContract
         preg_match_all($pattern, $endpoint, $matches, PREG_SET_ORDER);
         $params = $matches[0] ?? [];
         $id = $this->extractId($params);
-        if (!$id) {
+        if ($id === null) {
             return null;
         }
         return Route::make($id, $method, $uri, $params);
@@ -55,9 +55,6 @@ final class Resolver implements ResolverContract
 
     private function normalizeURI(string $uri): string
     {
-        if ($uri === '/') {
-            return '';
-        }
         $uri = strtolower(trim($uri, '/'));
         $uri = '/' . $uri;
         $uri = preg_replace('/(\/+)/', '/', $uri);

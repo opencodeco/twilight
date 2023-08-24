@@ -35,10 +35,10 @@ function dispatch(Response $response, string $id, array $data): void
 
 function register(CacheContract $cache, DatabaseContract $database, string $id, array $data): void
 {
-    $cache->set("person:$id", $data);
+    $cache->set("person:$id", JSON::stringify($data));
 
     ['apelido' => $nickname, 'nome' => $name, 'nascimento' => $birthdate, 'stack' => $stack] = $data;
-    $searchable = strtolower($name) . '|' . strtolower($nickname) . '|' . implode('|', $stack);
+    $searchable = strtolower($name) . '|' . strtolower($nickname) . '|' . implode('|', is_array($stack) ? $stack : []);
 
     $stack = JSON::stringify($stack);
     $database->execute(

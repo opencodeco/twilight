@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Twilight\Infrastructure\HTTP;
 
-use DI\Container;
 use Psr\Container\ContainerInterface;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
@@ -18,11 +17,8 @@ readonly class Kernel
     {
     }
 
-    public static function create(): self
+    public static function create(ContainerInterface $container): self
     {
-        $container = new Container();
-        $configure = require __DIR__ . '/../../../config/container.php';
-        $configure($container);
         return new self($container);
     }
 

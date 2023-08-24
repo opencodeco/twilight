@@ -6,6 +6,7 @@ namespace Twilight\Infrastructure\HTTP\Routing;
 
 use Closure;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 use Swoole\Http\Response;
 use Twilight\Infrastructure\HTTP\Contracts\ResolverContract;
 use Twilight\Infrastructure\HTTP\Contracts\RouteContract;
@@ -81,7 +82,7 @@ final class Router implements RouterContract
 
         $response = $this->container->get(Response::class);
         if (!$candidate) {
-            return;
+            throw new RuntimeException('router::handle can not resolve candidate');
         }
 
         $this->container->set(RouteContract::class, $route);
